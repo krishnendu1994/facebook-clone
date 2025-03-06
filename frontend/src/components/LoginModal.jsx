@@ -16,7 +16,7 @@ const Login = () => {
     maxWidth: '400px',
   };
   const handleProceedRegister = () => {
-    window.location='./#/register';
+    window.location.hash='/register';
   };
   const titleStyles = {
     marginBottom: '20px',
@@ -34,7 +34,7 @@ const Login = () => {
   };
 
   const loginButtonStyles = {
-    backgroundColor: '#1877f2',
+    backgroundColor: '#FF5733',
     color: '#fff',
     fontWeight:"bold",
     padding: '10px 20px',
@@ -67,7 +67,7 @@ const Login = () => {
     localStorage.setItem("refreshToken", response.data.refresh);
 
     // Redirect user to dashboard
-    window.location.href = "#/dashboard";
+    window.location.hash = "/dashboard";
   } catch (error) {
     console.error("Login failed:", error);
     setErrorLog(true);

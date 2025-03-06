@@ -12,7 +12,7 @@ const App = () => {
     setModalOpen(true);
   };
   const handleProceed = () => {
-    window.location='./#/login';
+    window.location.hash='/login';
   };
 
   useEffect(() => {

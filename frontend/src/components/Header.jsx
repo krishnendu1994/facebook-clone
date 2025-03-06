@@ -3,6 +3,7 @@ import React from 'react';
 import { AppBar, Toolbar, Typography, InputBase, IconButton, Box, Icon, SvgIcon, Button, Tooltip, useMediaQuery } from '@mui/material';
 import { Search, Notifications, AccountCircle } from '@mui/icons-material';
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
+import CopyrightRoundedIcon from "@mui/icons-material/CopyrightRounded";
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import OndemandVideoRoundedIcon from '@mui/icons-material/OndemandVideoRounded';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
@@ -17,14 +18,14 @@ const Header = ({ tab, setTab }) => {
     setTab(val);
   }
   const Home = () => {
-    window.location = '/dashboard';
+    window.location.hash = '/dashboard';
   }
   return (
     <AppBar sx={{ width: '100%'}}>
       <Toolbar sx={{ display: 'flex', margin: '-5px', marginLeft: '-25px' }}>
         <IconButton onClick={Home} sx={{ padding: '5px' ,marginLeft:'5px'}}>
 
-          <FacebookRoundedIcon color='primary' sx={{ fontSize: '40px', textAlign: 'left'}}></FacebookRoundedIcon>
+          <CopyrightRoundedIcon color='primary' sx={{ fontSize: '40px', textAlign: 'left'}}></CopyrightRoundedIcon>
         </IconButton>
         <Box sx={{ display: portrait ? 'none' : 'flex', position: 'relative', borderRadius: '20px',  marginLeft: 0, width: '20%' }}>
 

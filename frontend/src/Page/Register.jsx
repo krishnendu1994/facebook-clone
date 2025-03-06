@@ -15,7 +15,7 @@ const App = () => {
     setModalOpen(true);
   };
   const handleProceed = () => {
-    window.location='./#/login';
+    window.location.hash='/login';
   };
 
   useEffect(() => {
@@ -41,7 +41,7 @@ const App = () => {
         justifyContent: "center", width: '100%', padding: '10%' }}>
        
         <Box sx={{ width: '50%', marginTop: '-10%' }}>
-         <Typography variant='h2' color='primary' fontWeight='bold' textAlign="center">facebook</Typography>
+         <Typography variant='h2' color='primary' fontWeight='bold' textAlign="center">chatAI</Typography>
             {/*<Typography variant='h5' color='#424242' sx={{ width: '80%' }} fontWeight='bold'>Connect with friends and the world around you through the facebook</Typography>*/}
            
           <RegisterModal></RegisterModal>

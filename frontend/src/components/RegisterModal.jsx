@@ -53,7 +53,7 @@ const Register = () => {
       const response = await registerUser(user);
       
       setMessage("Registered successfully!");
-        window.location ='#/login';
+        window.location.hash ='/login';
     } catch (err) {
       setMessage(err.response.data.email);
       setError(true);

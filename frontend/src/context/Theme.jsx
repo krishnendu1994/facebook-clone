@@ -7,7 +7,7 @@ const getDesignTokens = (mode) => ({
       ? {
           // palette values for light mode
           primary: {
-            main: '#316FF6',
+            main: '#FF5733',
           },
           background: {
             default: '#f0f2f5',

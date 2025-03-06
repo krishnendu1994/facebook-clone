@@ -15,7 +15,7 @@ const App = () => {
     setModalOpen(true);
   };
   const handleProceed = () => {
-    window.location='./#/login';
+    window.location.hash='/login';
   };
 
   useEffect(() => {
@@ -40,8 +40,8 @@ const App = () => {
       <Container sx={{ display: 'flex', width: '100%', padding: '10%' }}>
         {isWholeScreen ? '' : (<>
           <Box sx={{ width: '100%', padding: '5%' }}>
-            <Typography variant='h2' color='primary' fontWeight='bold'>facebook</Typography>
-            <Typography variant='h5' color='#424242' sx={{ width: '80%' }} fontWeight='bold'>Connect with friends and the world around you through the facebook</Typography>
+            <Typography variant='h2' color='primary' fontWeight='bold'>chatAI</Typography>
+            <Typography variant='h5' color='#424242' sx={{ width: '80%' }} fontWeight='bold'>Connect with friends and the world with similar mentality around you through the chatAI</Typography>
             
           </Box>
         </>)}

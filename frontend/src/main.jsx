@@ -20,32 +20,35 @@ import ProtectedRoute from "./components/ProtectedRoute"; // ✅ Import it
 const router = createHashRouter([
   {
     path: "/",
-    element: <App></App>,
-    errorElement: <Error error={true}></Error>
+    element: <Navigate to="/login" replace />, // Default route redirects to login
   },
   {
-    path: "/Login",
-    element: <Login></Login>,
-    errorElement: <Error error={true}></Error>
+    path: "/login",
+    element: <Login />,
+    errorElement: <Error error={true} />,
   },
   {
-    path: "/Register",
-    element: <Register></Register>,
-    errorElement: <Error error={true}></Error>
+    path: "/register",
+    element: <Register />,
+    errorElement: <Error error={true} />,
   },
-   {
-    path: "/Dashboard",
+  {
+    path: "/dashboard",
     element: (
-      <ProtectedRoute> 
+      <ProtectedRoute>
         <Dashboard />
       </ProtectedRoute>
     ),
-    // errorElement: <Error errors={true} />,
+    // errorElement: <Error error={true} />,
   },
   {
-    path: "/PostView",
-    element: <Dashboard page='preview'></Dashboard>,
-    errorElement: <Error errors={true}></Error>
+    path: "/postview",
+    element: (
+      <ProtectedRoute>
+        <Dashboard page="preview" />
+      </ProtectedRoute>
+    ),
+    errorElement: <Error error={true} />,
   },
 ]);
 ReactDOM.createRoot(document.getElementById('root')).render(

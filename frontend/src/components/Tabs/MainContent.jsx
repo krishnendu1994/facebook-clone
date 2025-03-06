@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Post from '../mini_components/Post';
+
 import Wael from '../../assets/profile/jev.jpg';
 import AnimeProf from '../../assets/profile/anime.webp';  
 import { Modal, Box, Typography, Button, TextField, IconButton } from "@mui/material";
-import { AddPhotoAlternate, EmojiEmotions, VideoCameraBack } from "@mui/icons-material";
-import { Close, Gif, LocationOn, MoreHoriz } from "@mui/icons-material";
+import { AddPhotoAlternate, EmojiEmotions, PersonAdd } from "@mui/icons-material";
+import { Close, Gif, LocationOn, MoreHoriz,ChevronLeft,ArrowDropDown } from "@mui/icons-material";
 import { Avatar } from "@mui/material";
+import EmojiPicker from 'emoji-picker-react';
+import PostModal from '../mini_components/PostModal';
+import FeelingModal from '../mini_components/FeelingModal';
+import GifModal from '../mini_components/GifModal';
+import PostAudienceModal from '../mini_components/PostAudienceModal';
+import LocationModal from '../mini_components/LocationModal';
+const backgrounds = [
+  null,"#6a0dad", "#ff0000", "#000000", 
+  "linear-gradient(45deg, #ff6b6b, #ff4757)", 
+  "linear-gradient(45deg, #2ed573, #1e90ff)", 
+  "linear-gradient(45deg, #1e90ff, #3742fa)",
+  {
+    "thumb": "src/assets/img/thumb1.jpg",
+    "image_bg":"src/assets/img/bg1.jpg"
+  }
 
+];
 
 const samplePost = [{
   author: 'John Gyu',
@@ -74,9 +91,62 @@ const MainContent = ({ setPost }) => {
   const [newPost, setNewPost] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [postText, setPostText] = useState("");
+  const [selectedBg, setSelectedBg] = useState(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [VisibleBg, setVisibleBg] = useState(false);
+  const [modalEmojiOpen, setEmojiModalOpen] = useState(false);
+  const [modalGifOpen, setGifModalOpen] = useState(false);
+
+  const [showModal, setShowModal] = useState(false);
+  const [feelingActivity, setFeelingActivity] = useState("");
+  const [selectedgif, setGif] = useState("");
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showAudienceModal, setShowAudienceModal] = useState(false);
+  const [selectedAudience, setSelectedAudience] = useState("friends");
+
+  const [locationModalOpen, setLocationModalOpen] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
+  const [DragImg, setDragImg] = useState(false);
+
+  const handleSelectLocation = (location) => {
+    console.log("Selected location:", location);
+    setSelectedLocation(location)
+    setLocationModalOpen(false);
+    console.log("Selected location:", selectedLocation);
+  };
+
 
   const handleOpenModal = () => setModalOpen(true);
-  const handleCloseModal = () => setModalOpen(false);
+  const handleCloseModal = () => {
+    setPostText("");
+    setSelectedBg(null);
+    setShowEmojiPicker(false);
+    setVisibleBg(false);
+    setModalOpen(false);
+    setSelectedLocation(null);
+    setSelectedCategory(null);
+    setSearchQuery("");
+    setGif("");
+    setDragImg(false);
+    setEmojiModalOpen(false);
+    setGifModalOpen(false);
+    setFeelingActivity("");
+    setSelectedAudience("friends");
+    setLocationModalOpen(false);
+  };
+
+  const OpenedMedia =() => {
+    handleOpenModal();
+    setDragImg(true);
+  };
+   const OpenedGif =() => {
+    handleOpenModal();
+    setEmojiModalOpen(true);
+  };
 
   const handlePostSubmit = () => {
     if (newPost.trim() === "" && !selectedFile) return;
@@ -102,7 +172,18 @@ const MainContent = ({ setPost }) => {
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
+  // useEffect(() => {
+  // if (modalEmojiOpen) {
+  //   console.log("yes");
+  // }
+  // }, [modalEmojiOpen]);
+  // useEffect(() => {
+  // if (modalGifOpen) {
+  //  // console.log("yes");
+  // }
+  // }, [modalGifOpen]);
 
+// console.log(selectedAudience);
   return (
     <div style={{ padding: '20px', minWidth:'350px', maxWidth:'550px', width:'100%', marginLeft:'auto', marginRight:"auto" }}>
       
@@ -149,14 +230,14 @@ const MainContent = ({ setPost }) => {
           borderTop: "1px solid #ddd"
         }}>
           
-          <Button 
+          <Button onClick={()=> OpenedMedia()} 
             startIcon={<AddPhotoAlternate style={{ color: "#45bd62" }} />} 
             style={{ color: "#333", textTransform: "none", fontWeight: "bold", fontSize: "14px" }}
           >
             Photo/Video
           </Button>
           
-          <Button 
+          <Button  onClick={()=> OpenedGif()} 
             startIcon={<EmojiEmotions style={{ color: "#f7b928" }} />} 
             style={{ color: "#333", textTransform: "none", fontWeight: "bold", fontSize: "14px" }}
           >
@@ -168,127 +249,39 @@ const MainContent = ({ setPost }) => {
 
       {/* Post Modal */}
       <Modal open={modalOpen} onClose={handleCloseModal}>
-        <Box
-          sx={{
-            width: 500,
-            bgcolor: "white",
-            borderRadius: 3,
-            boxShadow: 24,
-            // p: 2,
-            mx: "auto",
-            my: "10%",
-            outline: "none",
-            display: "flex",
-            flexDirection: "column",
-          }}>
-          {/* Header */}
-          <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", p:2, pb: 1, position: "relative" }}>
-            <h3 style={{ margin: 0, textAlign: "center", flex: 1 }}>Create Post</h3>
-            <IconButton onClick={handleCloseModal} sx={{ position: "absolute", right: 0 }}>
-              <Close />
-            </IconButton>
-          </Box>
-
-          <hr style={{ border: "0.5px solid #ddd", width: "100%", marginBottom: "10px" }} />
-
-
-          <Box sx={{ p:2 }}>
-              {/* User Info + Friends Dropdown */}
-              <Box sx={{ display: "flex", alignItems: "center", mb: 2, justifyContent: "space-between" }}>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Avatar src="https://via.placeholder.com/40" sx={{ mr: 1 }} />
-                  <Box>
-                    <span style={{ fontWeight: "bold" }}>Krishnendu Paul</span>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        mt: 0.5,
-                        bgcolor: "#f0f2f5",
-                        px: 1,
-                        py: 0.5,
-                        borderRadius: "8px",
-                        fontSize: "14px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <img
-                        src="https://cdn-icons-png.flaticon.com/512/847/847969.png" // Friends icon
-                        alt="Friends"
-                        width="16"
-                        height="16"
-                        style={{ marginRight: 5 }}
-                      />
-                      Friends ▼
-                    </Box>
-                  </Box>
-                </Box>
-              </Box>
-
-              {/* Input Field */}
-              <TextField
-                multiline
-                fullWidth
-                rows={3}
-                placeholder="What's on your mind, Krishnendu?"
-                variant="standard"
-                InputProps={{
-                  disableUnderline: true,
-                  sx: { fontSize: "20px" },
-                }}
-                inputProps={{
-                  style: { fontSize: "24px", color: "#000" },
-                }}
-                sx={{
-                  border: "none",
-                  outline: "none",
-                  mb: 2,
-                }}
-                value={postText}
-                onChange={(e) => setPostText(e.target.value)}
-              />
-
-              {/* Add to Your Post Section */}
-              <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  bgcolor: "#fff",
-                  borderRadius: "10px",
-                  border:"1px solid #ccd0d5",
-                  padding: "10px",
-                  mb: 2,
-                }}
-              >
-                <Typography sx={{ fontWeight: "bold" }}>Add to Your Post</Typography>
-                <Box sx={{ display: "flex", gap: "10px" }}>
-                  <IconButton><AddPhotoAlternate style={{ color: "#45bd62" }} /></IconButton>
-                  <IconButton><VideoCameraBack style={{ color: "#f02849" }} /></IconButton>
-                  <IconButton><Gif style={{ color: "#00b2ff" }} /></IconButton>
-                  <IconButton><EmojiEmotions style={{ color: "#f7b928" }} /></IconButton>
-                  <IconButton><LocationOn style={{ color: "#f5533d" }} /></IconButton>
-                  <IconButton><MoreHoriz /></IconButton>
-                </Box>
-              </Box>
-
-              {/* Post Button */}
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{
-                  mt: 2,
-                  bgcolor: postText ? "#1877F2" : "#B8D3FC",
-                  color: "white",
-                  textTransform: "none",
-                  fontWeight: "bold",
-                }}
-                disabled={!postText}
-              >
-                Post
-              </Button>
-          </Box>
-        </Box>
+       <>
+    {modalEmojiOpen ? (
+      <FeelingModal onSelect={(selected) => {
+            setFeelingActivity(selected);
+            setEmojiModalOpen(false);
+          }} handleCloseModal={handleCloseModal} modalEmojiOpen={modalEmojiOpen} setEmojiModalOpen={setEmojiModalOpen} searchQuery={searchQuery} setSearchQuery={setSearchQuery} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} searchTerm={searchTerm} setSearchTerm={setSearchTerm}
+          onClose={() => setShowModal(false)} />
+    ): showAudienceModal ? (
+      <PostAudienceModal
+        onClose={() => setShowAudienceModal(false)}
+        onSelect={(value) => {
+          setSelectedAudience(value);
+          setShowAudienceModal(false);
+        }}
+      />
+    ) 
+    : locationModalOpen ? (
+      <LocationModal onSelect={handleSelectLocation} setLocationModalOpen={setLocationModalOpen} />
+      )
+    : modalGifOpen ? ( 
+      <GifModal onSelect={(selected) => {
+        console.log(selected);
+            setGif(selected);
+            setGifModalOpen(false);
+          }}
+        // handleCloseModal={handleCloseModal} 
+        modalGifOpen={modalGifOpen} 
+        setGifModalOpen={setGifModalOpen} 
+      />
+    ) : (
+      <PostModal feelingActivity={feelingActivity} modalEmojiOpen={modalEmojiOpen} setEmojiModalOpen={setEmojiModalOpen} setPost={setPost} handleCloseModal={handleCloseModal} modalGifOpen={modalGifOpen} setGifModalOpen={setGifModalOpen} showAudienceModal={showAudienceModal} setShowAudienceModal={setShowAudienceModal} selectedAudience={selectedAudience} setSelectedAudience={setSelectedAudience} setGif={setGif} selectedgif={selectedgif} setLocationModalOpen={setLocationModalOpen} locationModalOpen={locationModalOpen} selectedLocation={selectedLocation} DragImg={DragImg} setDragImg={setDragImg} />
+    )}
+  </>
       </Modal>
       {/* Post List */}
       {samplePost.map((post, index) => (

@@ -32,7 +32,7 @@ export default function AccountMenu() {
       localStorage.removeItem("refreshToken");
 
       // Redirect to login page
-      window.location.href = "#/login";
+      window.location.hash = "/login";
     } catch (error) {
       console.error("Logout failed:", error);
     }
